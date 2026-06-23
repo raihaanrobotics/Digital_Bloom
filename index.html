@@ -47,31 +47,27 @@
         .bloom-btn {
             position: absolute;
             bottom: 220px;
-            padding: 12px 20px;
-        
+    
+        /* --- COMPACT TWO-LINE LAYOUT CONFIGS --- */
+            padding: 12px 20px;       /* Balanced padding for stacked text */
+            font-size: 0.75rem;       /* Clean, legible text sizing */
+            letter-spacing: 2px;      /* Sharp modern spacing */
+            line-height: 1.4;         /* Creates neat breathing space between the two lines */
+            text-align: center;       /* Ensures both lines stay perfectly centered */
+            max-width: 220px;         /* Caps the width tightly so it can't stretch too wide */
+            width: auto;
+    
             background: rgba(255, 255, 255, 0.03);
-            
-            /* Glass border & blur */
             border: 1px solid rgba(255, 192, 203, 0.3); 
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            
             color: #ffc0cb;
-            font-size: 0.75rem;
             font-weight: 400;
-            letter-spacing: 2px;
-            line-height: 1.4;
-            text-align: center;
-            max-width: 220px;
-            width: auto;
             text-transform: uppercase;
             cursor: pointer;
-            border-radius: 24px; /* Perfectly round pill/circular style */
-            
+            border-radius: 24px;      /* Adjusted radius for a cleaner oval profile */
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 10;
-
-            /* Infinite breathing ambient pulse heartbeat */
             animation: breatheGlow 3s infinite ease-in-out;
         }
 
