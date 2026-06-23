@@ -10,7 +10,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent; /* Removes ugly blue flash on mobile tap */
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -24,14 +24,16 @@
             overflow: hidden;
         }
 
-        /* Container for the canvas and elements */
+        /* Container for perfect centering & alignment */
         .container {
             position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             width: 100%;
             max-width: 360px;
+            height: 500px; /* Aligns with canvas square bounds */
         }
 
         canvas {
@@ -39,68 +41,101 @@
             background: transparent;
             cursor: pointer;
             width: 100%;
-            max-width: 500px;
             height: auto;
         }
 
-        /* Upgraded Alive Glassmorphic Button */
-        .bloom-btn {
+        /* Initial UI Wrapper to drop everything together */
+        .intro-ui {
             position: absolute;
-            bottom: 220px;
-    
-        /* --- COMPACT TWO-LINE LAYOUT CONFIGS --- */
-            padding: 12px 20px;       /* Balanced padding for stacked text */
-            font-size: 0.75rem;       /* Clean, legible text sizing */
-            letter-spacing: 2px;      /* Sharp modern spacing */
-            line-height: 1.4;         /* Creates neat breathing space between the two lines */
-            text-align: center;       /* Ensures both lines stay perfectly centered */
-            max-width: 220px;         /* Caps the width tightly so it can't stretch too wide */
-            width: auto;
-    
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px; /* Perfect spatial gap between button and tip text */
+            z-index: 10;
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s ease;
+        }
+
+        /* Compact Oval Glassmorphic Button */
+        .bloom-btn {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 192, 203, 0.3); 
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             color: #ffc0cb;
+            padding: 12px 20px;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            line-height: 1.4;
+            text-align: center;
+            max-width: 220px;
+            width: auto;
             font-weight: 400;
             text-transform: uppercase;
             cursor: pointer;
-            border-radius: 24px;      /* Adjusted radius for a cleaner oval profile */
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 10;
+            border-radius: 24px;
+            transition: all 0.3s ease;
             animation: breatheGlow 3s infinite ease-in-out;
         }
 
-        /* Tactile click/touch state for mobile phones */
         .bloom-btn:active {
-            transform: scale(0.95);
+            transform: scale(0.96);
             background: rgba(255, 192, 203, 0.15);
-            border-color: rgba(255, 192, 203, 0.7);
-            box-shadow: 0 0 25px rgba(255, 192, 203, 0.4);
         }
 
-        /* Glowing heartbeat animation logic */
-        @keyframes breatheGlow {
-            0% {
-                box-shadow: 0 0 15px rgba(255, 192, 203, 0.15), inset 0 0 10px rgba(255, 192, 203, 0.05);
-                border-color: rgba(255, 192, 203, 0.25);
-            }
-            50% {
-                box-shadow: 0 0 30px rgba(255, 192, 203, 0.4), inset 0 0 15px rgba(255, 192, 203, 0.1);
-                border-color: rgba(255, 192, 203, 0.6);
-            }
-            100% {
-                box-shadow: 0 0 15px rgba(255, 192, 203, 0.15), inset 0 0 10px rgba(255, 192, 203, 0.05);
-                border-color: rgba(255, 192, 203, 0.25);
-            }
+        /* Click to Start Label Placement */
+        .hint-text {
+            color: rgba(255, 255, 255, 0.35);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 400;
+            text-align: center;
+            animation: blink 2s infinite ease-in-out;
         }
 
-        /* Hidden message that fades in after blooming */
+        /* Mid-Transition Code Terminal Screen Styling */
+        .terminal-screen {
+            position: absolute;
+            width: 85%;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease;
+            z-index: 15;
+        }
+
+        .terminal-text {
+            color: #ffffff;
+            font-size: 0.95rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            line-height: 1.6;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Glowing Pink Matrix Countdown Numbers */
+        .countdown-display {
+            position: absolute;
+            font-size: 5.5rem;
+            font-weight: 700;
+            color: #ffc0cb;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 20;
+            text-shadow: 0 0 25px rgba(255, 192, 203, 0.8), 0 0 50px rgba(255, 192, 203, 0.4);
+        }
+
+        /* Flash pulse class assigned via JS timing */
+        .flash-animation {
+            animation: pulseImpact 1s cubic-bezier(0.1, 0.8, 0.3, 1);
+        }
+
+        /* Target Core Flower Output Text Block */
         .message {
             position: absolute;
-            top: 10px;
+            top: 40px;
             color: #ffffff;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 300;
             letter-spacing: 1px;
             opacity: 0;
@@ -108,33 +143,66 @@
             transition: opacity 2s ease, transform 2s ease;
             text-align: center;
             width: 100%;
-            padding: 0 25px;
+            padding: 0 15px;
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            z-index: 5;
         }
 
         .message.show {
             opacity: 1;
             transform: translateY(0);
         }
+
+        /* --- Keyframe Control Core Blocks --- */
+        @keyframes breatheGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(255, 192, 203, 0.15); border-color: rgba(255, 192, 203, 0.25); }
+            50% { box-shadow: 0 0 30px rgba(255, 192, 203, 0.45); border-color: rgba(255, 192, 203, 0.6); }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0.25; }
+            50% { opacity: 0.75; }
+        }
+
+        @keyframes pulseImpact {
+            0% { transform: scale(0.6); opacity: 0; }
+            15% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); opacity: 0; }
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <div class="message" id="loveMessage">"Happy Birthday, Sania! You are the most beautiful in a garden of flowers. Hope you have a wonderful day..."</div>
+        <div class="message" id="loveMessage">"Happy Birthday Saimah! In a world governed by rigid logic and syntax, you are the organic algorithm that makes the whole system bloom."</div>
+        
         <canvas id="flowerCanvas" width="500" height="500"></canvas>
-        <button class="bloom-btn" id="bloomBtn">TO THE FUTURE SOFTWARE ENGINEER</button>
+
+        <div class="intro-ui" id="introUi">
+            <button class="bloom-btn" id="bloomBtn">To the future<br>software engineer</button>
+            <div class="hint-text">Click to start</div>
+        </div>
+
+        <div class="terminal-screen" id="terminalScreen">
+            <p class="terminal-text" id="terminalText"></p>
+        </div>
+
+        <div class="countdown-display" id="countdownDisplay">3</div>
     </div>
 
     <script>
         const canvas = document.getElementById('flowerCanvas');
         const ctx = canvas.getContext('2d');
+        const introUi = document.getElementById('introUi');
         const btn = document.getElementById('bloomBtn');
         const msg = document.getElementById('loveMessage');
+        const terminalScreen = document.getElementById('terminalScreen');
+        const terminalText = document.getElementById('terminalText');
+        const countdownDisplay = document.getElementById('countdownDisplay');
 
         let animationProgress = 0;
-        let isBlooming = false;
         let firefliesInitialized = false;
+        const fireflies = [];
 
         const config = {
             stemColor: '#abdf8f',
@@ -145,8 +213,59 @@
             grassColor: '#8bc34a'
         };
 
-        const fireflies = [];
+        // Blank clean initial frame canvas setup
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+        // Core Event Sequential Logic Flow Loop Trigger
+        btn.addEventListener('click', () => {
+            // Drop out Menu Controls smoothly
+            introUi.style.opacity = '0';
+            introUi.style.transform = 'translateY(10px)';
+            
+            setTimeout(() => {
+                introUi.style.display = 'none';
+                startTerminalSequence();
+            }, 800);
+        });
+
+        function startTerminalSequence() {
+            terminalScreen.style.opacity = '1';
+            terminalScreen.style.visibility = 'visible';
+            
+            // Set developer typing declaration string
+            terminalText.innerHTML = "This was built entirely from code.<br>Starting in...";
+            
+            // Allow text reading, then trigger flash countdown execution
+            setTimeout(() => {
+                terminalScreen.style.opacity = '0';
+                setTimeout(() => {
+                    terminalScreen.style.display = 'none';
+                    runCountdown(3);
+                }, 500);
+            }, 3000);
+        }
+
+        function runCountdown(count) {
+            if (count > 0) {
+                countdownDisplay.innerText = count;
+                countdownDisplay.style.visibility = 'visible';
+                
+                // Reset styling and run localized CSS pulse flash frame
+                countdownDisplay.classList.remove('flash-animation');
+                void countdownDisplay.offsetWidth; // Force Reflow browser re-render check
+                countdownDisplay.classList.add('flash-animation');
+                
+                setTimeout(() => {
+                    runCountdown(count - 1);
+                }, 1000);
+            } else {
+                countdownDisplay.style.display = 'none';
+                // Safe clear complete canvas viewport before launching execution
+                animateGrowth();
+            }
+        }
+
+        // --- Core Procedural Biological Engine Script Lines ---
         class Firefly {
             constructor() {
                 this.x = Math.random() * canvas.width;
@@ -157,7 +276,6 @@
                 this.angle = Math.random() * Math.PI * 2;
                 this.alpha = Math.random() * 0.5 + 0.3;
             }
-
             update() {
                 this.y -= this.speedY;
                 this.angle += 0.02;
@@ -167,7 +285,6 @@
                     this.x = Math.random() * canvas.width;
                 }
             }
-
             draw() {
                 ctx.save();
                 ctx.globalAlpha = this.alpha;
@@ -182,65 +299,29 @@
         }
 
         function initFireflies() {
-            for (let i = 0; i < 30; i++) {
-                fireflies.push(new Firefly());
-            }
+            for (let i = 0; i < 30; i++) { fireflies.push(new Firefly()); }
             firefliesInitialized = true;
         }
-
-        // Clear canvas initially
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        btn.addEventListener('click', () => {
-            if (isBlooming) return; 
-            isBlooming = true;
-            
-            // Clean dynamic disappearing transition
-            btn.style.opacity = '0';
-            btn.style.transform = 'scale(0.8)';
-            btn.style.pointerEvents = 'none';
-            
-            animateGrowth();
-        });
 
         function animateGrowth() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            // 1. Fireflies show up when flowers are almost up (progress > 0.8)
             if (animationProgress > 0.8) {
-                if (!firefliesInitialized) {
-                    initFireflies();
-                }
-                fireflies.forEach(firefly => {
-                    firefly.update();
-                    firefly.draw();
-                });
+                if (!firefliesInitialized) initFireflies();
+                fireflies.forEach(f => { f.update(); f.draw(); });
             }
 
-            // 2. Increment growth until fully complete
             if (animationProgress < 1) {
                 animationProgress += 0.006; 
             } else {
                 msg.classList.add('show');
             }
 
-            // 3. Draw Grass Bed
             drawGrassPatch(animationProgress);
-
-            // 4. Always draw the flowers at their current or completed state
-            // Far Left (Shortest)
             drawFlower(animationProgress, canvas.width / 2 - 140, 130, -35);
-            
-            // Far Right (Shortest)
             drawFlower(animationProgress, canvas.width / 2 + 140, 130, 35);
-
-            // Mid Left (Medium)
             drawFlower(animationProgress, canvas.width / 2 - 75, 185, -15);
-            
-            // Mid Right (Medium)
             drawFlower(animationProgress, canvas.width / 2 + 75, 185, 15);
-
-            // Center Flower (Tallest centerpiece)
             drawFlower(animationProgress, canvas.width / 2, 240, -5);
             
             requestAnimationFrame(animateGrowth);
@@ -255,7 +336,6 @@
             ctx.save();
             ctx.shadowBlur = 8;
             ctx.shadowColor = config.stemColor;
-            
             ctx.fillStyle = config.grassColor;
             ctx.beginPath();
             ctx.moveTo(canvas.width / 2 - 180, baseHeight);
@@ -266,21 +346,15 @@
             ctx.strokeStyle = config.stemColor;
             ctx.lineWidth = 2;
             ctx.lineCap = 'round';
-            
-            const startX = canvas.width / 2 - 170;
-            const endX = canvas.width / 2 + 170;
-            
-            for (let x = startX; x <= endX; x += 12) {
+            for (let x = canvas.width / 2 - 170; x <= canvas.width / 2 + 170; x += 12) {
                 const distanceFactor = 1 - (Math.abs(canvas.width / 2 - x) / 170);
                 const bladeHeight = (10 + Math.sin(x) * 6) * distanceFactor * currentProgress;
                 const lean = Math.sin(x) * 5;
-
                 ctx.beginPath();
                 ctx.moveTo(x, baseHeight);
                 ctx.quadraticCurveTo(x + lean / 2, baseHeight - bladeHeight / 2, x + lean, baseHeight - bladeHeight);
                 ctx.stroke();
             }
-
             ctx.restore();
         }
 
@@ -289,10 +363,8 @@
             const endY = canvas.height - stemHeight;
             const currentProgress = Math.min(progress, 1);
             
-            // Draw Stem
             ctx.beginPath();
             ctx.moveTo(centerX - curvatureOffset, startY);
-            
             const currentY = startY - (startY - endY) * Math.min(currentProgress * 1.5, 1);
             const cpX = centerX + curvatureOffset * Math.min(currentProgress, 1); 
             const cpY = startY - (startY - endY) * 0.5;
@@ -303,89 +375,55 @@
             ctx.lineCap = 'round';
             ctx.stroke();
 
-                // Leaves (Fixed alignment, unique variations, and alternating directions)
             if (currentProgress > 0.4) {
                 let leafProgress = (currentProgress - 0.4) / 0.6;
-                
-                // Quadratic Bezier curve function helper to find the exact point on the stem
                 const getBezierPoint = (t) => {
                     const x = (1 - t) * (1 - t) * (centerX - curvatureOffset) + 2 * (1 - t) * t * cpX + t * t * centerX;
                     const y = (1 - t) * (1 - t) * startY + 2 * (1 - t) * t * cpY + t * t * currentY;
                     return { x, y };
                 };
-
-                // Use the flower's curvature to vary heights slightly so they aren't uniform clones
-                const upperHeight = 0.38 + (Math.sin(centerX) * 0.05); // e.g., ~38% up the stem
-                const lowerHeight = 0.22 + (Math.cos(centerX) * 0.04); // e.g., ~22% up the stem
-
-                const upperLeafPos = getBezierPoint(upperHeight * Math.min(currentProgress * 1.5, 1));
-                const lowerLeafPos = getBezierPoint(lowerHeight * Math.min(currentProgress * 1.5, 1));
-
-                // Alternate leaf direction based on whether the stem leans left or right
+                const upperLeafPos = getBezierPoint((0.38 + Math.sin(centerX) * 0.05) * Math.min(currentProgress * 1.5, 1));
+                const lowerLeafPos = getBezierPoint((0.22 + Math.cos(centerX) * 0.04) * Math.min(currentProgress * 1.5, 1));
                 const leanLeft = curvatureOffset < 0; 
-                
-                // Upper leaf points one way, lower leaf points the other way
                 drawLeaf(upperLeafPos.x, upperLeafPos.y, leanLeft, leafProgress);
                 drawLeaf(lowerLeafPos.x, lowerLeafPos.y, !leanLeft, leafProgress);
             }
 
-            // Draw Flower Head
             if (currentProgress > 0.6) {
                 const flowerProgress = (currentProgress - 0.6) / 0.4; 
-                const flowerY = endY;
                 const maxPetalSize = 55;
-                const petalCount = 6;
-
                 ctx.save();
                 ctx.shadowBlur = 18;
                 ctx.shadowColor = config.glowColor; 
-
-                for (let i = 0; i < petalCount; i++) {
-                    const angle = (i * 2 * Math.PI) / petalCount;
-                    drawPetal(centerX, flowerY, maxPetalSize * flowerProgress, angle, config.petalColorOutside);
+                for (let i = 0; i < 6; i++) {
+                    drawPetal(centerX, endY, maxPetalSize * flowerProgress, (i * Math.PI) / 3, config.petalColorOutside);
                 }
-
-                for (let i = 0; i < petalCount; i++) {
-                    const angle = (i * 2 * Math.PI) / petalCount + (Math.PI / petalCount);
-                    drawPetal(centerX, flowerY, (maxPetalSize * 0.7) * flowerProgress, angle, config.petalColorInside);
+                for (let i = 0; i < 6; i++) {
+                    drawPetal(centerX, endY, (maxPetalSize * 0.7) * flowerProgress, (i * Math.PI) / 3 + (Math.PI / 6), config.petalColorInside);
                 }
-
                 ctx.beginPath();
-                ctx.arc(centerX, flowerY, 10 * flowerProgress, 0, 2 * Math.PI);
+                ctx.arc(centerX, endY, 10 * flowerProgress, 0, 2 * Math.PI);
                 ctx.fillStyle = '#f5b041'; 
                 ctx.shadowBlur = 25;
                 ctx.shadowColor = '#f5b041';
                 ctx.fill();
-
                 ctx.restore();
             }
         }
 
         function drawPetal(x, y, radius, angle, color) {
-            ctx.save();
-            ctx.translate(x, y);
-            ctx.rotate(angle);
-            ctx.beginPath();
-            ctx.moveTo(0, 0);
+            ctx.save(); ctx.translate(x, y); ctx.rotate(angle); ctx.beginPath(); ctx.moveTo(0, 0);
             ctx.bezierCurveTo(-radius / 2, -radius / 2, -radius / 2, -radius, 0, -radius);
             ctx.bezierCurveTo(radius / 2, -radius, radius / 2, -radius / 2, 0, 0);
-            ctx.fillStyle = color;
-            ctx.fill();
-            ctx.restore();
+            ctx.fillStyle = color; ctx.fill(); ctx.restore();
         }
 
         function drawLeaf(x, y, isLeft, progress) {
-            ctx.save();
-            ctx.translate(x, y);
-            if (!isLeft) ctx.scale(-1, 1); 
-            const size = 30 * Math.min(progress * 1.5, 1);
-            ctx.beginPath();
-            ctx.moveTo(0, 0);
+            ctx.save(); ctx.translate(x, y); if (!isLeft) ctx.scale(-1, 1); 
+            const size = 30 * Math.min(progress * 1.5, 1); ctx.beginPath(); ctx.moveTo(0, 0);
             ctx.bezierCurveTo(-size, -size/3, -size, -size, 0, -size);
             ctx.bezierCurveTo(size/2, -size/2, size/4, 0, 0, 0);
-            ctx.fillStyle = config.stemColor;
-            ctx.fill();
-            ctx.restore();
+            ctx.fillStyle = config.stemColor; ctx.fill(); ctx.restore();
         }
     </script>
 </body>
