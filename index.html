@@ -44,13 +44,14 @@
             height: auto;
         }
 
-        /* Initial UI Wrapper to drop everything together */
+        /* Initial UI Wrapper positioned higher on the screen */
         .intro-ui {
             position: absolute;
+            top: 140px; /* Shifted upward */
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 16px; /* Perfect spatial gap between button and tip text */
+            gap: 24px; /* Increased breathing space between button and label */
             z-index: 10;
             transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s ease;
         }
@@ -93,24 +94,40 @@
             animation: blink 2s infinite ease-in-out;
         }
 
-        /* Mid-Transition Code Terminal Screen Styling */
+        /* Mid-Transition Screen positioned higher up */
         .terminal-screen {
             position: absolute;
+            top: 140px; /* Shifted upward to match the button's focal region */
             width: 85%;
             text-align: center;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.5s ease;
             z-index: 15;
         }
 
+        /* ALL CAPS Text with smooth fade-in slide up animation */
         .terminal-text {
             color: #ffffff;
-            font-size: 0.95rem;
-            font-weight: 300;
-            letter-spacing: 1px;
+            font-size: 0.85rem;
+            font-weight: 400;
+            letter-spacing: 2px;
             line-height: 1.6;
+            text-transform: uppercase; /* Forces text to uppercase */
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            opacity: 0;
+            transform: translateY(15px);
+        }
+
+        /* Trigger class handled seamlessly via script injection */
+        .terminal-screen.reveal {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .terminal-screen.reveal .terminal-text {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), transform 1s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* Glowing Pink Matrix Countdown Numbers */
@@ -220,7 +237,7 @@
         btn.addEventListener('click', () => {
             // Drop out Menu Controls smoothly
             introUi.style.opacity = '0';
-            introUi.style.transform = 'translateY(10px)';
+            introUi.style.transform = 'translateY(-10px)';
             
             setTimeout(() => {
                 introUi.style.display = 'none';
@@ -229,20 +246,21 @@
         });
 
         function startTerminalSequence() {
-            terminalScreen.style.opacity = '1';
-            terminalScreen.style.visibility = 'visible';
-            
-            // Set developer typing declaration string
+            // Set developer uppercase declaration string
             terminalText.innerHTML = "This was built entirely from code.<br>Starting in...";
             
-            // Allow text reading, then trigger flash countdown execution
+            // Add the transition reveal class to run the CSS animation smoothly
+            terminalScreen.classList.add('reveal');
+            
+            // Allow text reading, then fade out and trigger flash countdown execution
             setTimeout(() => {
+                terminalScreen.style.transition = 'opacity 0.5s ease';
                 terminalScreen.style.opacity = '0';
                 setTimeout(() => {
                     terminalScreen.style.display = 'none';
                     runCountdown(3);
                 }, 500);
-            }, 3000);
+            }, 3500);
         }
 
         function runCountdown(count) {
